@@ -163,7 +163,6 @@ class VQRec(SequentialRecommender):
         
         mask = torch.bernoulli(torch.full_like(item_index, self.fake_idx_ratio, dtype=torch.float))
         fake_item_idx = torch.where(mask > 0, rand_idx, item_index)
-        fake_item_idx[0,:] = 0
         return self.pq_code_embedding(fake_item_idx).mean(dim=-2)
 
     def seq_item_contrastive_task(self, seq_output, same_pos_id, interaction):
@@ -180,7 +179,7 @@ class VQRec(SequentialRecommender):
 
         neg_logits = torch.matmul(seq_output, pos_items_emb.transpose(0, 1)) / self.temperature
         neg_logits = torch.where(same_pos_id, torch.tensor([0], dtype=torch.float, device=same_pos_id.device), neg_logits)
-        neg_logits = torch.exp(neg_logits).sum(dim=1)
+        neg_logits = torch.exp(neg_logits).sum(dim=1).reshape(-1, 1)
 
         fake_item_emb = self.generate_fake_neg_item_emb(pos_pq_code)
         fake_item_emb = F.normalize(fake_item_emb, dim=-1)
