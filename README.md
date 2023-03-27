@@ -94,7 +94,7 @@ Pre-train on multiple GPUs:
 CUDA_VISIBLE_DEVICES=0,1,2,3 python ddp_pretrain.py
 ```
 
-## Results (Updated March 27, 2023)
+## Results
 
 We fixed two bugs in March 2023 and re-trained a new version of pre-trained VQ-Rec model as `pretrained/VQRec-FHCKM-300-20230315.pth`. The fine-tuned results on six downstream datasets are presented here. Improved metrics (compared to the results in our paper) are denoted as bold.
 
