@@ -163,7 +163,6 @@ class VQRec(SequentialRecommender):
         
         mask = torch.bernoulli(torch.full_like(item_index, self.fake_idx_ratio, dtype=torch.float))
         fake_item_idx = torch.where(mask > 0, rand_idx, item_index)
-        fake_item_idx[0,:] = 0
         return self.pq_code_embedding(fake_item_idx).mean(dim=-2)
 
     def seq_item_contrastive_task(self, seq_output, same_pos_id, interaction):
